@@ -8,8 +8,8 @@
     <!-- Trunk will compile the Rust crate in this directory and bundle it. -->
     
 <script type="module">
-import init, * as bindings from '/web_client-a3539ea90d9301ed.js';
-const wasm = await init({ module_or_path: '/web_client-a3539ea90d9301ed_bg.wasm' });
+import init, * as bindings from '/web_client-7aa7221b451cd79d.js';
+const wasm = await init({ module_or_path: '/web_client-7aa7221b451cd79d_bg.wasm' });
 
 
 window.wasmBindings = bindings;
@@ -78,7 +78,7 @@ dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
         color: #fff;
       }
     </style>
-  <link rel="modulepreload" href="/web_client-a3539ea90d9301ed.js" crossorigin="anonymous" integrity="sha384-9NK7mm6j2/i6ssQ8QumBfI1/tH39eIsl/YdkEBiJDDccn/rTFr/1rz0Czn0zbaCi"><link rel="preload" href="/web_client-a3539ea90d9301ed_bg.wasm" crossorigin="anonymous" integrity="sha384-nXLxhhiem5YI9c/mzjrPBvNn0+OTUd8yqwUTaGo6Lmhq2Rg7YgG1kpYjbs8gpwKz" as="fetch" type="application/wasm"></head>
+  <link rel="modulepreload" href="/web_client-7aa7221b451cd79d.js" crossorigin="anonymous" integrity="sha384-bDnqwD4g4TizO/aKGY2ofV/fKy8Hv2Qx3OjFx0YJOEmAnorX7/qg0ejPJB97WVjO"><link rel="preload" href="/web_client-7aa7221b451cd79d_bg.wasm" crossorigin="anonymous" integrity="sha384-CcrCISkv3/ae0zj5gmscMGRMsDN/NY1ZRYgXqTsbjR1kaX5S+XePYlHb2XiJk25U" as="fetch" type="application/wasm"></head>
   <body>
     <div class="wrap">
       <canvas id="tetris"></canvas>
