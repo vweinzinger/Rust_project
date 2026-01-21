@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tetris (Rust + WASM)</title>
+
+    <!-- Trunk will compile the Rust crate in this directory and bundle it. -->
+    <link data-trunk rel="rust" />
+
+    <style>
+      body {
+        margin: 0;
+        background: #0b0b0b;
+        color: #e8e8e8;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+          "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      }
+      .wrap {
+        display: flex;
+        gap: 18px;
+        padding: 18px;
+        align-items: flex-start;
+      }
+
+      .controls {
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        gap: 8px;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(6px);
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .controls button {
+        min-width: 52px;
+        height: 44px;
+        border-radius: 10px;
+        border: 1px solid #333;
+        background: #141414;
+        color: #fff;
+        font-size: 16px;
+      }
+      @media (max-width: 780px) {
+        .controls {
+          display: flex;
+        }
+        .wrap {
+          padding-bottom: 90px;
+        }
+      }
+      canvas {
+        border: 1px solid #333;
+        background: #111;
+        image-rendering: pixelated;
+      }
+      #hud {
+        max-width: 520px;
+        line-height: 1.4;
+        font-size: 14px;
+      }
+      #hud b {
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <canvas id="tetris"></canvas>
+      <div id="hud"></div>
+    </div>
+
+    <!-- Simple on-screen controls for mobile/small screens -->
+    <div id="controls" class="controls">
+      <button id="btn-left">◀</button>
+      <button id="btn-right">▶</button>
+      <button id="btn-rotate">⟳</button>
+      <button id="btn-down">▼</button>
+      <button id="btn-drop">DROP</button>
+      <button id="btn-pause">PAUSE</button>
+      <button id="btn-restart">R</button>
+    </div>
+
+    <script>
+      // Tiny WebAudio-based SFX (no external files needed).
+      window.tetrisSfx = function (name) {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return;
+        const ctx = window.__tetrisAudioCtx || (window.__tetrisAudioCtx = new Ctx());
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        const now = ctx.currentTime;
+        const vol = 0.04;
+        gain.gain.setValueAtTime(vol, now);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+
+        let freq = 440;
+        if (name === "move") freq = 330;
+        if (name === "rotate") freq = 520;
+        if (name === "drop") freq = 220;
+        if (name === "line") freq = 660;
+        if (name === "gameover") freq = 120;
+
+        osc.type = "square";
+        osc.frequency.setValueAtTime(freq, now);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      };
+    </script>
+  </body>
+</html>
